@@ -1,0 +1,15 @@
+if [ "$#" -lt 1 ]; then
+    echo "Usage: phone searchfor [… searchfor]"
+    echo "(You didn’t tell me what you want to search for.)"
+    exit 1
+fi
+
+DATAFILE="mydata.txt"
+SEARCH_PATTERN=$(printf "(%s)" "$(IFS="|"; echo "$*")")
+RESULT=$(egrep -i "$SEARCH_PATTERN" "$DATAFILE")
+
+if [ -z "$RESULT" ]; then
+    exit 0
+fi
+
+echo "$RESULT" | awk -f display.awk
